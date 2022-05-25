@@ -11,6 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 class BasicApplication(threading.Thread):
+    VERSION = 1.0
+    NAME = "BasicApplication"
     SLEEP = 5
 
     def __init__(self, config_path, secrets_list):
@@ -22,6 +24,8 @@ class BasicApplication(threading.Thread):
         self.config_manager.start()
         self.log_manager = LogManager(self.config_manager)
         self.log_manager.start()
+        time.sleep(1)
+        logger.critical("{0} v.{1} started".format(self.NAME, self.VERSION))
 
     def run(self):
         while True:

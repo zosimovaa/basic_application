@@ -4,17 +4,6 @@ runtime:
   errorTimeout: 10
   query: "insert into rt_dev.orderbook values"
 
-# === Database params ===
-db:
-  host: 185.117.118.107
-  port: 59000
-  user: alex
-  password: Xrxcmr758
-  database: rt_dev
-
-queries:
-  orderbook: insert into rt_dev.orderbook values
-
 # === Логирование ===
 log:
   version: 1
