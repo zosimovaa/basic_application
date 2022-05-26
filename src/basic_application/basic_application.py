@@ -1,4 +1,3 @@
-
 import time
 import threading
 import logging
@@ -24,8 +23,6 @@ class BasicApplication(threading.Thread):
         self.config_manager.start()
         self.log_manager = LogManager(self.config_manager)
         self.log_manager.start()
-        time.sleep(1)
-        logger.critical("{0} v.{1} started".format(self.NAME, self.VERSION))
 
     def run(self):
         while True:
