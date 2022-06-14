@@ -36,12 +36,14 @@ class ConfigManager(threading.Thread):
         self._read_secrets()
 
     def _read_config(self):
-        with open(self.path, "r") as stream:
-            self.config = yaml.safe_load(stream)
+        if self.path is not None:
+            with open(self.path, "r") as stream:
+                self.config = yaml.safe_load(stream)
 
     def _read_secrets(self):
-        for secret in self.secrets_list:
-            self.secrets[secret] = os.getenv(secret, None)
+        if self.secrets_list is not None:
+            for secret in self.secrets_list:
+                self.secrets[secret] = os.getenv(secret, None)
 
     def run(self):
         logger.warning('ConfigManager started')

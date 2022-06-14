@@ -14,7 +14,7 @@ class BasicApplication(threading.Thread):
     NAME = "BasicApplication"
     SLEEP = 5
 
-    def __init__(self, config_path, secrets_list):
+    def __init__(self, config_path=None, secrets_list=None):
         threading.Thread.__init__(self, daemon=True)
         self.halt = threading.Event()
         self.config_path = config_path
