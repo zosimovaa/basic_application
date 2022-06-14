@@ -23,6 +23,8 @@ class ConfigManager(threading.Thread):
 
     def __init__(self, config_path, secrets_list):
         threading.Thread.__init__(self, daemon=True)
+        self.ready = threading.Event()
+
         self.path = config_path
         self.config = dict()
         self.secrets_list = secrets_list
@@ -48,6 +50,9 @@ class ConfigManager(threading.Thread):
                 self._read_config()
                 self._read_secrets()
 
+                if not self.ready.is_set():
+                    self.ready.set()
+
             except Exception as e:
                 logger.error(e)
 
@@ -62,5 +67,6 @@ class ConfigManager(threading.Thread):
 
     def stop(self):
         self.halt.set()
+        self.ready.clear()
         self.join()
         logger.warning('ConfigManager stopped')

@@ -30,6 +30,7 @@ class LogManager(threading.Thread):
         self.config_manager = config_manager
         self.log_hash = None
         self.halt = threading.Event()
+        self.ready = threading.Event()
 
     def init_file_log(self, config):
         if "file" in config.get("handlers", None):
@@ -51,6 +52,10 @@ class LogManager(threading.Thread):
                         logging.config.dictConfig(log_config)
                         self.log_hash = log_config_hash
                         logger.warning('Logging config changed')
+
+                        if not self.ready.is_set():
+                            self.ready.set()
+
             except Exception as e:
                 logger.error(e)
 
@@ -62,5 +67,6 @@ class LogManager(threading.Thread):
 
     def stop(self):
         self.halt.set()
+        self.ready.clear()
         self.join()
         logger.warning('LogManager stopped')

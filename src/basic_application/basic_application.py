@@ -19,10 +19,14 @@ class BasicApplication(threading.Thread):
         self.halt = threading.Event()
         self.config_path = config_path
         self.secrets_list = secrets_list
+
         self.config_manager = ConfigManager(self.config_path, self.secrets_list)
         self.config_manager.start()
+        self.config_manager.ready.wait()
+
         self.log_manager = LogManager(self.config_manager)
         self.log_manager.start()
+        self.log_manager.ready.wait()
 
     def run(self):
         while True:
