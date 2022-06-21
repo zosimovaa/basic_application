@@ -46,15 +46,12 @@ class LogManager(threading.Thread):
                 config = self.config_manager.get_config()
                 log_config = config.get("log", None)
                 if log_config:
-                    log_config_hash = hashlib.md5(json.dumps(log_config, sort_keys=True).encode("utf-8")).hexdigest()
+                    log_config_hash = hashlib.md5(json.dumps(log_config, sort_keys=True, indent=4).encode("utf-8")).hexdigest()
                     if log_config_hash != self.log_hash:
                         self.init_file_log(log_config)
                         logging.config.dictConfig(log_config)
                         self.log_hash = log_config_hash
                         logger.warning('Logging config changed')
-
-                        if not self.ready.is_set():
-                            self.ready.set()
 
             except Exception as e:
                 logger.error(e)

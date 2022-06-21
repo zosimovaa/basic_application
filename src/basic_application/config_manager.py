@@ -10,8 +10,10 @@ Date: 2022/05/15
 """
 
 import os
+import json
 import yaml
 import time
+import hashlib
 import threading
 import logging.config
 
@@ -39,6 +41,7 @@ class ConfigManager(threading.Thread):
         if self.path is not None:
             with open(self.path, "r") as stream:
                 self.config = yaml.safe_load(stream)
+                self.hash = hashlib.md5(json.dumps(self.config, sort_keys=True, indent=4).encode("utf-8")).hexdigest()
 
     def _read_secrets(self):
         if self.secrets_list is not None:
@@ -72,3 +75,5 @@ class ConfigManager(threading.Thread):
         self.ready.clear()
         self.join()
         logger.warning('ConfigManager stopped')
+
+

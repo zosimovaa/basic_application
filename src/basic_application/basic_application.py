@@ -1,4 +1,6 @@
 import time
+import json
+import hashlib
 import threading
 import logging
 import logging.config
@@ -26,7 +28,7 @@ class BasicApplication(threading.Thread):
 
         self.log_manager = LogManager(self.config_manager)
         self.log_manager.start()
-        self.log_manager.ready.wait()
+        #self.log_manager.ready.wait()
 
     def run(self):
         while True:
@@ -44,3 +46,6 @@ class BasicApplication(threading.Thread):
         self.join()
         logger.critical("App stopped")
 
+    @staticmethod
+    def get_hash(dict_obj):
+        return hashlib.md5(json.dumps(dict_obj, sort_keys=True, indent=4).encode("utf-8")).hexdigest()
