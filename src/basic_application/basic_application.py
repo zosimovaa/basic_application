@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class BasicApplication(threading.Thread):
     VERSION = 1.0
     NAME = "BasicApplication"
-    SLEEP = 5
+    SLEEP = 10
 
     def __init__(self, config_path=None, secrets_list=None):
         threading.Thread.__init__(self, daemon=True)

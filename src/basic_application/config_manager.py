@@ -48,12 +48,21 @@ class ConfigManager(threading.Thread):
             for secret in self.secrets_list:
                 self.secrets[secret] = os.getenv(secret, None)
 
+    def _set_db_credentials_from_env(self):
+        """Обновляет некоторые переменные в конфиге из секретов"""
+        if "db" in self.config:
+            if "user" not in self.config["db"]:
+                self.config["db"]["user"] = os.getenv("DB_USER")
+            if "password" not in self.config["db"]:
+                self.config["db"]["password"] = os.getenv("DB_PASS")
+
     def run(self):
         logger.warning('ConfigManager started')
         while True:
             try:
                 self._read_config()
                 self._read_secrets()
+                self._set_db_credentials_from_env()
 
                 if not self.ready.is_set():
                     self.ready.set()
