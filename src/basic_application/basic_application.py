@@ -28,7 +28,7 @@ class BasicApplication(threading.Thread):
 
         self.log_manager = LogManager(self.config_manager)
         self.log_manager.start()
-        #self.log_manager.ready.wait()
+        self.log_manager.ready.wait()
 
     def run(self):
         while True:

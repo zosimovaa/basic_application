@@ -53,6 +53,9 @@ class LogManager(threading.Thread):
                         self.log_hash = log_config_hash
                         logger.warning('Logging config changed')
 
+                    if not self.ready.is_set():
+                        self.ready.set()
+
             except Exception as e:
                 logger.error(e)
 
