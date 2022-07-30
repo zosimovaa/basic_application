@@ -7,11 +7,13 @@ def with_exception(exc):
             try:
                 response = f(*args, **kwargs)
             except Exception as e:
-                raise exc from e
+                if isinstance(e, exc):
+                    raise e
+                else:
+                    raise exc from e
             return response
         return wrapped
     return inner_decorator
-
 
 def with_debug_time(func):
     def wrapper(*args, **kwargs):
