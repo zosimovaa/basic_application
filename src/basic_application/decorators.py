@@ -1,16 +1,15 @@
 import time
 
-
 def with_exception(exc):
     def inner_decorator(f):
         def wrapped(*args, **kwargs):
             try:
                 response = f(*args, **kwargs)
+            except exc:
+                raise
+
             except Exception as e:
-                if isinstance(e, exc):
-                    raise e
-                else:
-                    raise exc from e
+                raise exc from e
             return response
         return wrapped
     return inner_decorator
